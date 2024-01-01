@@ -1,32 +1,52 @@
-import { randomUUID } from 'crypto'
 import { nanoid } from 'nanoid'
 
-export interface IUrl {
+export interface UrlProps {
   id?: string
-  shortUrl: string
   originalUrl: string
+  shortUrl: string
   clicks?: number
-  createdAt?: Date | null
+  createdAt?: Date
 }
 
 export class Url {
-  private _id: string
-  private _shortUrl: string
+  private _id?: string
   private _originalUrl: string
-  private _clicks: number
-  private _createdAt?: Date | null
+  private _shortUrl: string
+  private _clicks?: number
+  private _createdAt?: Date
 
-  private constructor(data: IUrl) {
-    this._id = data.id || randomUUID()
+  constructor(data: UrlProps) {
+    this._id = data.id
     this._originalUrl = data.originalUrl
-    this._shortUrl = this.generateShortUrl()
-    this._clicks = data.clicks || 0
+    this._shortUrl = this.generateUrl()
     this._createdAt = data.createdAt
   }
 
-  static create() {}
+  static create(props: UrlProps) {
+    return new Url(props)
+  }
 
-  private generateShortUrl() {
+  get id() {
+    return this._id
+  }
+
+  get originalUrl() {
+    return this._originalUrl
+  }
+
+  get shortUrl() {
+    return this._shortUrl
+  }
+
+  get clicks() {
+    return this._clicks
+  }
+
+  get createdAt() {
+    return this._createdAt
+  }
+
+  private generateUrl(): string {
     const shortUrlId = nanoid()
     return `${process.env.BASE_URL}/${shortUrlId}`
   }
