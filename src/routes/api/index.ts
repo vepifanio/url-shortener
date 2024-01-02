@@ -1,5 +1,5 @@
 import { Router } from 'express'
-import { z } from 'zod'
+import { ZodError, z } from 'zod'
 import { UrlModel } from '../../database/models/UrlModel'
 import { Url } from '../../entity/Url'
 import { InvalidUrlError } from '../../errors/InvalidUrlError'
@@ -32,7 +32,7 @@ apiRouter.post('/short', async (req, res) => {
   } catch (error) {
     console.error(error)
 
-    if (error instanceof InvalidUrlError) {
+    if (error instanceof InvalidUrlError || error instanceof ZodError) {
       return res.status(400).send({
         error: error.message,
       })
