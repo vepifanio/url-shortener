@@ -4,7 +4,6 @@ services:
     restart: always
     environment:
       MONGO_INITDB_ROOT_USERNAME: docker
-      MONGO_INITDB_ROOT_PASSWORD: mongo 
-      MONGO_INITDB_DATABASE: url_short_db
+      MONGO_INITDB_ROOT_PASSWORD: mongo
     ports:
       - 27017:27017
