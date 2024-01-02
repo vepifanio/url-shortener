@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose'
-import { UrlProps } from './Url'
+import { UrlProps } from '../../entity/Url'
 import { randomUUID } from 'node:crypto'
 
 const UrlSchema = new Schema<UrlProps>({
@@ -12,13 +12,14 @@ const UrlSchema = new Schema<UrlProps>({
     type: 'String',
     required: true,
   },
-  shortUrl: {
+  shortUrlId: {
     type: 'String',
     required: true,
   },
   clicks: {
     type: 'Number',
     required: true,
+    default: 0,
   },
   createdAt: {
     type: 'Date',
