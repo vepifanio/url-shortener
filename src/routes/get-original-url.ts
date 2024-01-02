@@ -1,7 +1,9 @@
 import { Router } from 'express'
 import { ZodError, z } from 'zod'
-import { UrlModel } from '../database/models/UrlModel'
 import { InvalidUrlError } from '../errors/InvalidUrlError'
+import { GetOriginalUrlUseCase } from '../use-cases/GetOriginalUrl'
+import { MongooseUrlsRepository } from '../database/repositories/MongooseUrlsRepository'
+import { UrlNotFoundError } from '../errors/UrlNotFoundError'
 
 const getOriginalUrlRoute = Router()
 
@@ -12,40 +14,35 @@ const getOriginalUrlParamsSchema = z.object({
 getOriginalUrlRoute.get('/:urlId', async (req, res) => {
   try {
     const { urlId } = getOriginalUrlParamsSchema.parse(req.params)
+    const urlsRepository = new MongooseUrlsRepository()
+    const getOriginalUrlUseCase = new GetOriginalUrlUseCase(urlsRepository)
 
-    const url = await UrlModel.findOne({
+    const { originalUrl } = await getOriginalUrlUseCase.execute({
       shortUrlId: urlId,
     })
 
-    if (!url) {
-      return res.status(401).send({
-        message: 'URL not found.',
-      })
-    }
-
-    url.$inc('clicks', 1)
-
-    await url.save()
-
     return res.send({
-      originalUrl: url.originalUrl,
+      originalUrl,
     })
   } catch (error) {
     console.error(error)
 
-    if (error instanceof InvalidUrlError || error instanceof ZodError) {
-      return res.status(400).send({
-        error: error.message,
-      })
+    switch (true) {
+      case error instanceof UrlNotFoundError:
+        return res.status(404).send({
+          error: error.message,
+        })
+      case error instanceof InvalidUrlError || error instanceof ZodError:
+        return res.status(400).send({
+          error: error.message,
+        })
+      case error instanceof Error:
+        return res.status(500).send({
+          error: error.message,
+        })
+      default:
+        return res.status(500).send()
     }
-
-    if (error instanceof Error) {
-      return res.status(500).send({
-        error: error.message,
-      })
-    }
-
-    return res.status(500).send()
   }
 })
 

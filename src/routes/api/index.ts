@@ -1,8 +1,8 @@
 import { Router } from 'express'
 import { ZodError, z } from 'zod'
-import { UrlModel } from '../../database/models/UrlModel'
-import { Url } from '../../entity/Url'
 import { InvalidUrlError } from '../../errors/InvalidUrlError'
+import { MongooseUrlsRepository } from '../../database/repositories/MongooseUrlsRepository'
+import { GenerateShortUrlUseCase } from '../../use-cases/GenerateShortUrl'
 
 const apiRouter = Router()
 
@@ -11,23 +11,19 @@ const createShortUrlBodySchema = z.object({
 })
 
 apiRouter.post('/short', async (req, res) => {
+  const urlsRepository = new MongooseUrlsRepository()
+  const generateShortUrl = new GenerateShortUrlUseCase(urlsRepository)
+
   try {
     const { originalUrl } = createShortUrlBodySchema.parse(req.body)
 
-    const url = Url.create({
+    const { shortUrl, shortUrlId } = await generateShortUrl.execute({
       originalUrl,
     })
 
-    const persistedUrl = new UrlModel({
-      originalUrl: url.originalUrl,
-      shortUrlId: url.shortUrlId,
-    })
-
-    await persistedUrl.save()
-
     return res.status(201).send({
-      shortUrl: url.getShortUrl(),
-      shorUrlId: url.shortUrlId,
+      shortUrl,
+      shortUrlId,
     })
   } catch (error) {
     console.error(error)
