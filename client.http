@@ -1,0 +1,14 @@
+@baseUrl = http://localhost:3333
+@lastShortUrlId = {{generate_short_url.response.body.shorUrlId}}
+
+# @name generate_short_url
+POST {{baseUrl}}/api/short
+Content-Type: application/json
+
+{
+  "originalUrl": "http://google.com"
+}
+
+###
+# @name get_original_url
+GET {{baseUrl}}/{{lastShortUrlId}}
