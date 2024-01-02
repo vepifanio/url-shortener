@@ -1,11 +1,9 @@
 import express from 'express'
+import { router } from './routes'
 
 const app = express()
 
-app.get('/', (request, response) => {
-  response.send({
-    hello: 'world',
-  })
-})
+app.use(express.json())
+app.use(router)
 
 export { app }
