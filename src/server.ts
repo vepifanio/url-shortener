@@ -1,7 +1,18 @@
 import { app } from './app'
+import dotenv from 'dotenv'
+import connectDB from './database'
 
-const PORT = 3333
+dotenv.config()
 
-app.listen(PORT, () => {
-  console.log(`Server listening on port ${PORT}`)
-})
+const PORT = Number(process.env.PORT) || 3333
+
+connectDB()
+  .then(() => {
+    app.listen(PORT, () => {
+      console.log(`Server listening on port ${PORT}`)
+    })
+  })
+  .catch((error) => {
+    console.error(error)
+    process.exit(1)
+  })
