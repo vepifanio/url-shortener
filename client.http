@@ -1,12 +1,12 @@
 @baseUrl = http://localhost:3333
-@lastShortUrlId = {{generate_short_url.response.body.shorUrlId}}
+@lastShortUrlId = {{generate_short_url.response.body.shortUrlId}}
 
 # @name generate_short_url
 POST {{baseUrl}}/api/short
 Content-Type: application/json
 
 {
-  "originalUrl": "http://google.com"
+  "originalUrl": "http://vepifaniodev.com"
 }
 
 ###
