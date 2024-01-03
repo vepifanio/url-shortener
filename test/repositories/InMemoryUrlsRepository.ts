@@ -1,5 +1,5 @@
-import { Url } from '../../application/entity/Url'
-import { UrlsRepository } from '../../application/repositories/UrlsRepository'
+import { Url } from '../../src/application/entity/Url'
+import { UrlsRepository } from '../../src/application/repositories/UrlsRepository'
 
 export class InMemoryUrlsRepository implements UrlsRepository {
   items: Url[] = []

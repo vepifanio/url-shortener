@@ -1,5 +1,5 @@
 import { randomUUID } from 'node:crypto'
-import { Url, UrlProps } from '../../application/entity/Url'
+import { Url, UrlProps } from '../../src/application/entity/Url'
 import { nanoid } from 'nanoid'
 
 export function makeUrl(props: Partial<UrlProps>) {
