@@ -1,5 +1,5 @@
-import { Url } from '../../entity/Url'
-import { UrlsRepository } from '../../repositories/UrlsRepository'
+import { Url } from '../../application/entity/Url'
+import { UrlsRepository } from '../../application/repositories/UrlsRepository'
 import { UrlModel } from '../models/UrlModel'
 
 export class MongooseUrlsRepository implements UrlsRepository {

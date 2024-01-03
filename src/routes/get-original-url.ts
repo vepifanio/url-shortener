@@ -1,9 +1,9 @@
 import { Router } from 'express'
 import { ZodError, z } from 'zod'
-import { InvalidUrlError } from '../errors/InvalidUrlError'
-import { GetOriginalUrlUseCase } from '../use-cases/GetOriginalUrl'
 import { MongooseUrlsRepository } from '../database/repositories/MongooseUrlsRepository'
-import { UrlNotFoundError } from '../errors/UrlNotFoundError'
+import { GetOriginalUrlUseCase } from '../application/use-cases/GetOriginalUrl'
+import { InvalidUrlError } from '../application/errors/InvalidUrlError'
+import { UrlNotFoundError } from '../application/errors/UrlNotFoundError'
 
 const getOriginalUrlRoute = Router()
 

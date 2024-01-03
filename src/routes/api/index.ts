@@ -1,8 +1,8 @@
 import { Router } from 'express'
 import { ZodError, z } from 'zod'
-import { InvalidUrlError } from '../../errors/InvalidUrlError'
 import { MongooseUrlsRepository } from '../../database/repositories/MongooseUrlsRepository'
-import { GenerateShortUrlUseCase } from '../../use-cases/GenerateShortUrl'
+import { GenerateShortUrlUseCase } from '../../application/use-cases/GenerateShortUrl'
+import { InvalidUrlError } from '../../application/errors/InvalidUrlError'
 
 const apiRouter = Router()
 
