@@ -25,7 +25,7 @@ export class Url {
       throw new InvalidUrlError()
     }
 
-    const shortUrlId = nanoid()
+    const shortUrlId = data.shortUrlId || nanoid()
 
     this._id = data.id
     this._originalUrl = data.originalUrl
