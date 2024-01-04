@@ -1,13 +1,8 @@
 import dotenv from 'dotenv'
 import path from 'path'
 
-const envPath =
-  process.env.NODE_ENV === 'test'
-    ? path.resolve('test', '.env.test')
-    : path.resolve('.env')
-
 dotenv.config({
-  path: envPath,
+  path: path.resolve('.env'),
 })
 
 interface ConfigProps {
