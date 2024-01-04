@@ -2,6 +2,7 @@
 import { nanoid } from 'nanoid'
 import dotenv from 'dotenv'
 import { InvalidUrlError } from '../errors/InvalidUrlError'
+import { config } from '../../Config'
 
 dotenv.config()
 
@@ -59,7 +60,7 @@ export class Url {
   }
 
   getShortUrl(): string {
-    return `${process.env.BASE_URL}/${this._shortUrlId}`
+    return `${config.get('BASE_URL')}/${this._shortUrlId}`
   }
 
   private validateUrl(value: string) {

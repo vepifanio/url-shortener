@@ -1,10 +1,11 @@
 import { app } from './app'
 import dotenv from 'dotenv'
 import connectDB from './database'
+import { config } from './Config'
 
 dotenv.config()
 
-const PORT = Number(process.env.PORT) || 3333
+const PORT = Number(config.get('PORT')) || 3333
 
 connectDB()
   .then(() => {

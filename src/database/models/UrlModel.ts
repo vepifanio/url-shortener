@@ -1,5 +1,5 @@
 import mongoose, { Schema } from 'mongoose'
-import { UrlProps } from '../../entity/Url'
+import { UrlProps } from '../../application/entity/Url'
 import { randomUUID } from 'node:crypto'
 
 const UrlSchema = new Schema<UrlProps>({

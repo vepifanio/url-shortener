@@ -1,15 +1,9 @@
-import dotenv from 'dotenv'
 import mongoose from 'mongoose'
-import path from 'path'
 import { createMongoUri } from '../../src/database/utils/createMongoUri'
 import request from 'supertest'
 import { app } from '../../src/app'
 import { randomUUID } from 'crypto'
 import { UrlProps } from '../../src/application/entity/Url'
-
-dotenv.config({
-  path: path.resolve('test', '.env.test'),
-})
 
 describe('Generate short url route', async () => {
   beforeEach(async () => {
