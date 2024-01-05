@@ -1,3 +1,4 @@
+import { UrlNotFoundError } from '../../src/application/errors/UrlNotFoundError'
 import { GetOriginalUrlUseCase } from '../../src/application/use-cases/GetOriginalUrl'
 import { makeUrl } from '../factories/makeUrl'
 import { InMemoryUrlsRepository } from '../repositories/InMemoryUrlsRepository'
@@ -36,5 +37,11 @@ describe('Get Original URL Use Case', () => {
     await sut.execute({ shortUrlId: url.shortUrlId })
 
     expect(urlsRepository.items[0].clicks).toBe(2)
+  })
+
+  it('should not be able to get an original url from an inexistent short url id', async () => {
+    await expect(
+      sut.execute({ shortUrlId: 'inexistent-short-url' }),
+    ).rejects.toThrow(new UrlNotFoundError())
   })
 })
