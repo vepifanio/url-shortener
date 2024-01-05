@@ -21,9 +21,7 @@ getOriginalUrlRoute.get('/:urlId', async (req, res) => {
       shortUrlId: urlId,
     })
 
-    return res.send({
-      originalUrl,
-    })
+    return res.redirect(originalUrl)
   } catch (error) {
     console.error(error)
 

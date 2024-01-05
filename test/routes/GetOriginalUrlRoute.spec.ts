@@ -26,8 +26,7 @@ describe('Generate short url route', async () => {
 
     const result = await request(app).get('/short-url-id')
 
-    expect(result.statusCode).toBe(200)
-    expect(result.body).toHaveProperty('originalUrl')
-    expect(result.body.originalUrl).toBe('http://test.com')
+    expect(result.statusCode).toBe(302)
+    expect(result.headers.location).toBe('http://test.com')
   })
 })
