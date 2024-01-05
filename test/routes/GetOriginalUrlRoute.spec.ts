@@ -1,14 +1,14 @@
 import mongoose from 'mongoose'
-import { createMongoUri } from '../../src/database/utils/createMongoUri'
 import request from 'supertest'
 import { app } from '../../src/app'
 import { randomUUID } from 'crypto'
 import { UrlProps } from '../../src/application/entity/Url'
+import { config } from '../../src/Config'
 
 describe('Generate short url route', async () => {
   beforeEach(async () => {
-    const mongoUri = createMongoUri()
-    await mongoose.connect(mongoUri)
+    const mongoUri = config.get('MONGO_URI')
+    await mongoose.connect(mongoUri, { dbName: randomUUID() })
   })
 
   afterEach(async () => {

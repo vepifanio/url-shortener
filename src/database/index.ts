@@ -1,16 +1,17 @@
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
-import { createMongoUri } from './utils/createMongoUri'
+import { config } from '../Config'
 
 dotenv.config({
   path: './env',
 })
 
-const mongoURI = createMongoUri()
+const mongoURI = config.get('MONGO_URI')
+const dbName = config.get('MONGO_DB_NAME')
 
 const connectDB = async () => {
   try {
-    await mongoose.connect(mongoURI)
+    await mongoose.connect(mongoURI, { dbName })
     console.log('Database connected')
   } catch (error) {
     console.error(error)

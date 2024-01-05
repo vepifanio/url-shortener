@@ -6,10 +6,8 @@ dotenv.config({
 })
 
 interface ConfigProps {
-  PORT: string | number
-  MONGO_INITDB_ROOT_USERNAME: string
-  MONGO_INITDB_ROOT_PASSWORD: string
-  MONGO_HOST: string
+  PORT: string
+  MONGO_URI: string
   MONGO_DB_NAME: string
   BASE_URL: string
 }
@@ -17,11 +15,9 @@ interface ConfigProps {
 export class Config {
   private props: ConfigProps = {
     PORT: '',
-    BASE_URL: '',
-    MONGO_INITDB_ROOT_USERNAME: '',
-    MONGO_INITDB_ROOT_PASSWORD: '',
-    MONGO_HOST: '',
     MONGO_DB_NAME: '',
+    MONGO_URI: '',
+    BASE_URL: '',
   }
 
   constructor() {
@@ -46,10 +42,6 @@ export class Config {
 
   get<T extends keyof ConfigProps>(key: T) {
     return this.props[key]
-  }
-
-  getAll() {
-    return this.props
   }
 }
 
