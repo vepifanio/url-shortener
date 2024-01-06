@@ -7,7 +7,7 @@ import { InvalidUrlError } from '../../application/errors/InvalidUrlError'
 const apiRouter = Router()
 
 const createShortUrlBodySchema = z.object({
-  originalUrl: z.string(),
+  originalUrl: z.string().url('Invalid URL.'),
 })
 
 apiRouter.post('/short', async (req, res) => {
@@ -28,9 +28,15 @@ apiRouter.post('/short', async (req, res) => {
   } catch (error) {
     console.error(error)
 
-    if (error instanceof InvalidUrlError || error instanceof ZodError) {
+    if (error instanceof InvalidUrlError) {
       return res.status(400).send({
         error: error.message,
+      })
+    }
+
+    if (error instanceof ZodError) {
+      return res.status(400).send({
+        error: error.errors[0].message,
       })
     }
 
