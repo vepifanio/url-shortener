@@ -73,10 +73,12 @@ Response example:
   curl -X GET "http://localhost:3333/a-short-url-id"
 ```
 
-## ⚙️ Stack
+## ⚙️ Libraries
 
 - Typescript
-- MongoDB (Mongoose)
+- Mongoose
 - Express
 - Vitest / Supertest
-- Docker
+- express-rate-limit
+- zod
+- nanoid
