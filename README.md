@@ -1,4 +1,4 @@
-# URL Shortener
+URL Shortener
 
 A URL shortener made with Typescript.
 
@@ -28,7 +28,7 @@ Install dependencies
   npm install
 ```
 
-Run docker compose to get up mongodb service
+Run docker compose to get up MongoDB and Redis services
 
 ```bash
   docker compose up -d
@@ -40,7 +40,7 @@ Start the application
   npm run start:dev
 ```
 
-Run the tests
+Run the tests (uses in-memory MongoDB, no Docker required)
 
 ```bash
   npm run test
@@ -73,6 +73,12 @@ Response example:
   curl -X GET "http://localhost:3333/a-short-url-id"
 ```
 
+## Architecture
+
+- **Clean Architecture**: Entity → Repository Interface → Use Case → Route
+- **Caching**: Redis cache layer with decorator pattern (`CachedUrlsRepository` wrapping `MongooseUrlsRepository`)
+- **Testing**: MongoDB Memory Server for isolated integration tests, Redis mocked in-memory
+
 ## ⚙️ Libraries
 
 - Typescript
@@ -82,3 +88,5 @@ Response example:
 - express-rate-limit
 - zod
 - nanoid
+- ioredis (Redis client)
+- mongodb-memory-server (in-memory MongoDB for tests)
