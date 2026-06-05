@@ -1,6 +1,6 @@
 import { Router } from 'express'
 import { ZodError, z } from 'zod'
-import { MongooseUrlsRepository } from '../database/repositories/MongooseUrlsRepository'
+import { CachedUrlsRepository } from '../database/repositories/CachedUrlsRepository'
 import { GetOriginalUrlUseCase } from '../application/use-cases/GetOriginalUrl'
 import { InvalidUrlError } from '../application/errors/InvalidUrlError'
 import { UrlNotFoundError } from '../application/errors/UrlNotFoundError'
@@ -14,7 +14,7 @@ const getOriginalUrlParamsSchema = z.object({
 getOriginalUrlRoute.get('/:urlId', async (req, res) => {
   try {
     const { urlId } = getOriginalUrlParamsSchema.parse(req.params)
-    const urlsRepository = new MongooseUrlsRepository()
+    const urlsRepository = new CachedUrlsRepository()
     const getOriginalUrlUseCase = new GetOriginalUrlUseCase(urlsRepository)
 
     const { originalUrl } = await getOriginalUrlUseCase.execute({
