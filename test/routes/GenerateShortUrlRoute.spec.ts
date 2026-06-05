@@ -1,17 +1,28 @@
 import mongoose from 'mongoose'
 import request from 'supertest'
+import { MongoMemoryServer } from 'mongodb-memory-server'
 import { app } from '../../src/app'
 import { randomUUID } from 'node:crypto'
-import { config } from '../../src/Config'
 
-describe('Generate short url route', async () => {
+describe('Generate short url route', () => {
+  let mongoServer: MongoMemoryServer
+
+  beforeAll(async () => {
+    mongoServer = await MongoMemoryServer.create()
+  })
+
+  afterAll(async () => {
+    await mongoServer.stop()
+  })
+
   beforeEach(async () => {
-    const mongoUri = config.get('MONGO_URI')
+    const mongoUri = mongoServer.getUri()
     await mongoose.connect(mongoUri, { dbName: randomUUID() })
   })
 
   afterEach(async () => {
     await mongoose.connection.dropDatabase()
+    await mongoose.disconnect()
   })
 
   it('[POST] /api/short - should return 201 with the short url', async () => {
