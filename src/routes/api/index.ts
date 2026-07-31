@@ -1,8 +1,7 @@
 import { Router } from 'express'
 import { ZodError, z } from 'zod'
-import { CachedUrlsRepository } from '../../database/repositories/CachedUrlsRepository'
-import { GenerateShortUrlUseCase } from '../../application/use-cases/GenerateShortUrl'
 import { InvalidUrlError } from '../../application/errors/InvalidUrlError'
+import { container } from '../../container'
 
 const apiRouter = Router()
 
@@ -11,13 +10,10 @@ const createShortUrlBodySchema = z.object({
 })
 
 apiRouter.post('/short', async (req, res) => {
-  const urlsRepository = new CachedUrlsRepository()
-  const generateShortUrl = new GenerateShortUrlUseCase(urlsRepository)
-
   try {
     const { originalUrl } = createShortUrlBodySchema.parse(req.body)
 
-    const { shortUrl, shortUrlId } = await generateShortUrl.execute({
+    const { shortUrl, shortUrlId } = await container.useCases.generateShortUrl.execute({
       originalUrl,
     })
 

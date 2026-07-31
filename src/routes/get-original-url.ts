@@ -1,9 +1,8 @@
 import { Router } from 'express'
 import { ZodError, z } from 'zod'
-import { CachedUrlsRepository } from '../database/repositories/CachedUrlsRepository'
-import { GetOriginalUrlUseCase } from '../application/use-cases/GetOriginalUrl'
 import { InvalidUrlError } from '../application/errors/InvalidUrlError'
 import { UrlNotFoundError } from '../application/errors/UrlNotFoundError'
+import { container } from '../container'
 
 const getOriginalUrlRoute = Router()
 
@@ -14,10 +13,8 @@ const getOriginalUrlParamsSchema = z.object({
 getOriginalUrlRoute.get('/:urlId', async (req, res) => {
   try {
     const { urlId } = getOriginalUrlParamsSchema.parse(req.params)
-    const urlsRepository = new CachedUrlsRepository()
-    const getOriginalUrlUseCase = new GetOriginalUrlUseCase(urlsRepository)
 
-    const { originalUrl } = await getOriginalUrlUseCase.execute({
+    const { originalUrl } = await container.useCases.getOriginalUrl.execute({
       shortUrlId: urlId,
     })
 
