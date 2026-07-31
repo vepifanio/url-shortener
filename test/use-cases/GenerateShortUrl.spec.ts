@@ -1,5 +1,6 @@
 import { GenerateShortUrlUseCase } from '../../src/application/use-cases/GenerateShortUrl'
 import { InMemoryUrlsRepository } from '../repositories/InMemoryUrlsRepository'
+import { InvalidUrlError } from '../../src/application/errors/InvalidUrlError'
 
 describe('Generate Short URL Use Case', () => {
   let urlsRepository: InMemoryUrlsRepository
@@ -24,5 +25,11 @@ describe('Generate Short URL Use Case', () => {
         originalUrl,
       }),
     )
+  })
+
+  it('should not be able to generate a short url with an invalid url', async () => {
+    await expect(
+      sut.execute({ originalUrl: 'invalid-url' }),
+    ).rejects.toBeInstanceOf(InvalidUrlError)
   })
 })

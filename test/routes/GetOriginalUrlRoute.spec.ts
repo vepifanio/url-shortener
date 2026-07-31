@@ -4,6 +4,7 @@ import { MongoMemoryServer } from 'mongodb-memory-server'
 import { app } from '../../src/app'
 import { randomUUID } from 'crypto'
 import { UrlProps } from '../../src/application/entity/Url'
+import { UrlModel } from '../../src/database/models/UrlModel'
 
 describe('Get original url route', () => {
   let mongoServer: MongoMemoryServer
@@ -39,5 +40,29 @@ describe('Get original url route', () => {
 
     expect(result.statusCode).toBe(302)
     expect(result.headers.location).toBe('http://test.com')
+  })
+
+  it('[GET] /:shortUrlId - should return 404 when short url id does not exist', async () => {
+    const result = await request(app).get('/inexistent-id')
+
+    expect(result.statusCode).toBe(404)
+    expect(result.body).toHaveProperty('error')
+  })
+
+  it('[GET] /:shortUrlId - should increment click count when redirecting', async () => {
+    const urlId = randomUUID()
+    await UrlModel.create({
+      id: urlId,
+      originalUrl: 'http://test.com',
+      shortUrlId: 'click-test-id',
+      clicks: 0,
+      createdAt: new Date(),
+    })
+
+    await request(app).get('/click-test-id')
+
+    const updatedUrl = await UrlModel.findOne({ id: urlId })
+
+    expect(updatedUrl?.clicks).toBe(1)
   })
 })

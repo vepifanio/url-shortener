@@ -44,4 +44,11 @@ describe('Generate short url route', () => {
     expect(result.body).toHaveProperty("error")
     expect(result.body.error).toBe("Invalid URL.")
   })
+
+  it('[POST] /api/short - should return 400 when originalUrl is missing', async () => {
+    const result = await request(app).post('/api/short').send({})
+
+    expect(result.statusCode).toBe(400)
+    expect(result.body).toHaveProperty('error')
+  })
 })
